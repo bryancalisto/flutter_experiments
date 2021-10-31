@@ -11,13 +11,32 @@ class MagicBall extends StatefulWidget {
 }
 
 class _MagicBallState extends State<MagicBall> {
+  Offset tapPosition = Offset.zero;
+
+  void _updatePan(Offset position, Size size) {
+    setState(() {
+      tapPosition = Offset(2 * position.dx / size.width - 1, 2 * position.dy / size.height - 1);
+
+      // Max range of movement
+      if (tapPosition.distance > 0.85) {
+        tapPosition = Offset.fromDirection(tapPosition.direction, 0.85);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = Size.square(MediaQuery.of(context).size.shortestSide / 1.5);
-    return Ball3D(
-      color: Colors.black,
-      size: size,
-      lightSource: MagicBall.lightSource,
+
+    return GestureDetector(
+      onPanUpdate: (newPosition) => _updatePan(newPosition.localPosition, size),
+      child: Ball3D(
+        text: 'SOME SHIT',
+        windowPosition: tapPosition,
+        color: Colors.black,
+        size: size,
+        lightSource: MagicBall.lightSource,
+      ),
     );
   }
 }
