@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graphics/ball_3d.dart';
+import 'package:graphics/transform_widgets/ball_3d.dart';
 
 class MagicBall extends StatefulWidget {
   static const lightSource = Offset(0.0, -0.75);
