@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:graphics/drawing_board/drawn_path.dart';
 
 class CustomDrawer extends CustomPainter {
-  final List<Offset> pathPoints;
+  final List<DrawnPath> paths;
 
-  CustomDrawer({required this.pathPoints});
+  CustomDrawer({required this.paths});
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint _paint = Paint()..style = PaintingStyle.stroke;
-    _paint.color = Colors.black;
-    _paint.strokeWidth = 2;
-    Path _path = Path();
-    _path.moveTo(0, 0);
+    if (paths.isNotEmpty) {
+      for (DrawnPath currentPath in paths) {
+        Paint _paint = Paint()..style = PaintingStyle.stroke;
+        _paint.color = currentPath.color;
+        _paint.strokeWidth = currentPath.width;
 
-    if (pathPoints.isNotEmpty) {
-      _path.moveTo(pathPoints.first.dx, pathPoints.first.dy);
-      for (int i = 1; i < pathPoints.length; i++) {
-        _path.lineTo(pathPoints[i].dx, pathPoints[i].dy);
+        Path _path = Path();
+        _path.moveTo(currentPath.pathPoints.first.dx, currentPath.pathPoints.first.dy);
+        for (int i = 1; i < currentPath.pathPoints.length; i++) {
+          _path.lineTo(currentPath.pathPoints[i].dx, currentPath.pathPoints[i].dy);
+        }
+
+        canvas.drawPath(_path, _paint);
       }
-      canvas.drawPath(_path, _paint);
     }
   }
 
