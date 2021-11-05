@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphics/drawing_board/drawer.dart';
 import 'package:graphics/drawing_board/drawn_path.dart';
+import '../utils.dart' as utils;
 
 class DrawingPage extends StatefulWidget {
   const DrawingPage({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class DrawingPage extends StatefulWidget {
 class _DrawingPageState extends State<DrawingPage> {
   late List<Offset> pathPoints;
   List<DrawnPath> paths = [];
+  // Using queue instead of stack because didn't want to implement a stack
+  utils.Stack<DrawnPath> pathsForRedoingUndone = utils.Stack<DrawnPath>();
   late DrawnPath currentPath;
   double width = 2;
   Color color = Colors.black;
@@ -32,7 +35,15 @@ class _DrawingPageState extends State<DrawingPage> {
 
   void undo() {
     if (paths.isNotEmpty) {
+      pathsForRedoingUndone.push(paths.last);
       paths.removeLast();
+    }
+  }
+
+  void redo() {
+    if (!pathsForRedoingUndone.isEmpty) {
+      final path = pathsForRedoingUndone.pop();
+      paths.add(path);
     }
   }
 
@@ -47,15 +58,20 @@ class _DrawingPageState extends State<DrawingPage> {
             top: 10,
             child: Column(
               children: [
-                TextButton(
+                RoundButtonWithIcon(
                   onPressed: undo,
-                  child: const Icon(Icons.undo, color: Colors.white),
-                  style: TextButton.styleFrom(
-                    shape: const CircleBorder(),
-                    backgroundColor: Colors.black,
-                    padding: const EdgeInsets.all(10),
-                  ),
-                )
+                  color: Colors.black,
+                  icon: const Icon(Icons.undo, color: Colors.white),
+                ),
+                RoundButtonWithIcon(
+                  onPressed: redo,
+                  color: Colors.black,
+                  icon: const Icon(Icons.redo, color: Colors.white),
+                ),
+                SelectColorButton(onPressed: () => setState(() => color = Colors.black), color: Colors.black),
+                SelectColorButton(onPressed: () => setState(() => color = Colors.green), color: Colors.green),
+                SelectColorButton(onPressed: () => setState(() => color = Colors.red), color: Colors.red),
+                SelectColorButton(onPressed: () => setState(() => color = Colors.yellow), color: Colors.yellow),
               ],
             ),
           )
@@ -90,5 +106,47 @@ class _DrawingPageState extends State<DrawingPage> {
       print('finished drawing');
       setState(() {});
     }
+  }
+}
+
+class SelectColorButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final Color color;
+
+  const SelectColorButton({Key? key, required this.onPressed, required this.color}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: const SizedBox(),
+      style: TextButton.styleFrom(
+        shape: const CircleBorder(),
+        backgroundColor: color,
+        padding: const EdgeInsets.all(10),
+      ),
+    );
+  }
+}
+
+class RoundButtonWithIcon extends StatelessWidget {
+  final VoidCallback onPressed;
+  final Color color;
+  final Icon icon;
+
+  const RoundButtonWithIcon({Key? key, required this.onPressed, required this.color, required this.icon})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: icon,
+      style: TextButton.styleFrom(
+        shape: const CircleBorder(),
+        backgroundColor: color,
+        padding: const EdgeInsets.all(10),
+      ),
+    );
   }
 }
