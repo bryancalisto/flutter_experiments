@@ -56,22 +56,33 @@ class _DrawingPageState extends State<DrawingPage> {
           Positioned(
             right: 10,
             top: 10,
+            bottom: 10,
             child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                RoundButtonWithIcon(
-                  onPressed: undo,
-                  color: Colors.black,
-                  icon: const Icon(Icons.undo, color: Colors.white),
+                Column(
+                  children: [
+                    RoundButtonWithIcon(
+                      onPressed: undo,
+                      color: Colors.black,
+                      icon: const Icon(Icons.undo, color: Colors.white),
+                    ),
+                    RoundButtonWithIcon(
+                      onPressed: redo,
+                      color: Colors.black,
+                      icon: const Icon(Icons.redo, color: Colors.white),
+                    ),
+                  ],
                 ),
-                RoundButtonWithIcon(
-                  onPressed: redo,
-                  color: Colors.black,
-                  icon: const Icon(Icons.redo, color: Colors.white),
+                Column(
+                  children: [
+                    SelectColorButton(onPressed: () => setState(() => color = Colors.black), color: Colors.black),
+                    SelectColorButton(onPressed: () => setState(() => color = Colors.green), color: Colors.green),
+                    SelectColorButton(onPressed: () => setState(() => color = Colors.red), color: Colors.red),
+                    SelectColorButton(onPressed: () => setState(() => color = Colors.yellow), color: Colors.yellow),
+                  ],
                 ),
-                SelectColorButton(onPressed: () => setState(() => color = Colors.black), color: Colors.black),
-                SelectColorButton(onPressed: () => setState(() => color = Colors.green), color: Colors.green),
-                SelectColorButton(onPressed: () => setState(() => color = Colors.red), color: Colors.red),
-                SelectColorButton(onPressed: () => setState(() => color = Colors.yellow), color: Colors.yellow),
               ],
             ),
           )
