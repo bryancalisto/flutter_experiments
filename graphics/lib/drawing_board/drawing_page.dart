@@ -60,6 +60,7 @@ class _DrawingPageState extends State<DrawingPage> {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
                   children: [
@@ -77,10 +78,31 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 Column(
                   children: [
-                    SelectColorButton(onPressed: () => setState(() => color = Colors.black), color: Colors.black),
-                    SelectColorButton(onPressed: () => setState(() => color = Colors.green), color: Colors.green),
-                    SelectColorButton(onPressed: () => setState(() => color = Colors.red), color: Colors.red),
-                    SelectColorButton(onPressed: () => setState(() => color = Colors.yellow), color: Colors.yellow),
+                    SelectColorButton(
+                      onPressed: () => setState(() => color = Colors.black),
+                      color: Colors.black,
+                      isSelected: color == Colors.black,
+                    ),
+                    SelectColorButton(
+                      onPressed: () => setState(() => color = Colors.green),
+                      color: Colors.green,
+                      isSelected: color == Colors.green,
+                    ),
+                    SelectColorButton(
+                      onPressed: () => setState(() => color = Colors.red),
+                      color: Colors.red,
+                      isSelected: color == Colors.red,
+                    ),
+                    SelectColorButton(
+                      onPressed: () => setState(() => color = Colors.yellow),
+                      color: Colors.yellow,
+                      isSelected: color == Colors.yellow,
+                    ),
+                    SelectColorButton(
+                      onPressed: () => setState(() => color = Colors.white),
+                      color: Colors.white,
+                      isSelected: color == Colors.white,
+                    ),
                   ],
                 ),
               ],
@@ -123,16 +145,33 @@ class _DrawingPageState extends State<DrawingPage> {
 class SelectColorButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color color;
+  final bool isSelected;
 
-  const SelectColorButton({Key? key, required this.onPressed, required this.color}) : super(key: key);
+  const SelectColorButton({
+    Key? key,
+    required this.onPressed,
+    required this.color,
+    required this.isSelected,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
-      child: const SizedBox(),
+      child: isSelected
+          ? Container(
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                border: Border.all(color: Colors.grey, width: 0.5),
+              ),
+            )
+          : Container(),
       style: TextButton.styleFrom(
         shape: const CircleBorder(),
+        side: const BorderSide(color: Colors.grey),
         backgroundColor: color,
         padding: const EdgeInsets.all(10),
       ),
