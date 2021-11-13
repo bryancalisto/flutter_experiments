@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:state_management/get_it/models/counter.dart';
+import 'package:state_management/get_it/services/counter_svc.dart';
 
 class CounterConfigVw extends StatefulWidget {
   static const route = 'CounterConfigVw';
@@ -11,7 +12,7 @@ class CounterConfigVw extends StatefulWidget {
 }
 
 class _CounterConfigVwState extends State<CounterConfigVw> {
-  bool saved = false;
+  bool saved = true;
   var countCtl = TextEditingController();
   var startCtl = TextEditingController();
   var endCtl = TextEditingController();
@@ -19,12 +20,16 @@ class _CounterConfigVwState extends State<CounterConfigVw> {
 
   @override
   void initState() {
-    countCtl.text = '0';
-    startCtl.text = '0';
-    endCtl.text = '0';
-    stepCtl.text = '0';
-    // Start text editors values with the global counter instance values
+    /*Start text inputs values with the global counter instance values*/
+    countCtl.text = locator<Counter>().count.toString();
+    startCtl.text = locator<Counter>().start.toString();
+    endCtl.text = locator<Counter>().end.toString();
+    stepCtl.text = locator<Counter>().step.toString();
     super.initState();
+  }
+
+  void setSavedFalse() {
+    setState(() => saved = false);
   }
 
   @override
@@ -38,17 +43,22 @@ class _CounterConfigVwState extends State<CounterConfigVw> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('Start'),
-                NumberInput(ctl: countCtl, onTap: () => setState(() => saved = false)),
+                NumberInput(ctl: countCtl, onTap: setSavedFalse),
                 const SizedBox(height: 10),
                 const Text('End'),
-                NumberInput(ctl: startCtl, onTap: () => setState(() => saved = false)),
+                NumberInput(ctl: startCtl, onTap: setSavedFalse),
                 const SizedBox(height: 10),
                 const Text('Step'),
-                NumberInput(ctl: stepCtl, onTap: () => setState(() => saved = false)),
+                NumberInput(ctl: stepCtl, onTap: setSavedFalse),
                 const SizedBox(height: 10),
                 const Text('Save'),
                 ElevatedButton(
                   onPressed: () {
+                    /*Save the current configuration*/
+                    locator<Counter>().count = int.parse(countCtl.text);
+                    locator<Counter>().start = int.parse(startCtl.text);
+                    locator<Counter>().end = int.parse(endCtl.text);
+                    locator<Counter>().step = int.parse(stepCtl.text);
                     setState(() => saved = true);
                   },
                   child: const Icon(Icons.save, size: 40),
