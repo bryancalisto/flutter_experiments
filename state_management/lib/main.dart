@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/bloc/bloc_app.dart';
 import 'package:state_management/get_it/get_it_app.dart';
+import 'package:state_management/get_it/services/counter_svc.dart';
 
 void main() {
+  initLocator();
   runApp(const MyApp());
 }
 
@@ -24,7 +26,22 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.grey,
+        backgroundColor: const Color(0xff091833),
+        colorScheme: const ColorScheme(
+          background: Color(0xff091833),
+          primary: Color(0xff711c91),
+          onPrimary: Color(0xffea00d9),
+          secondary: Color(0xff711c91),
+          onSecondary: Color(0xffea00d9),
+          brightness: Brightness.light,
+          error: Colors.yellow,
+          onBackground: Color(0xffea00d9),
+          onError: Color(0xff091833),
+          surface: Color(0xffea00d9),
+          onSurface: Color(0xff0abdc6),
+          primaryVariant: Color(0xff711c91),
+          secondaryVariant: Color(0xff711c91),
+        ),
       ),
       home: DefaultTabController(
         length: _tabsContent.length,
