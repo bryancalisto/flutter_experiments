@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/bloc/bloc_app.dart';
 import 'package:state_management/get_it/get_it_app.dart';
-import 'package:state_management/get_it/services/counter_svc.dart';
+import 'package:state_management/get_it/services/locator.dart';
 
 void main() {
   initLocator();

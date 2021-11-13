@@ -1,8 +1,42 @@
-import 'package:get_it/get_it.dart';
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:state_management/get_it/models/counter.dart';
+import 'package:state_management/get_it/services/locator.dart';
 
-GetIt locator = GetIt.I;
+class CounterNotifier extends ValueNotifier {
+  CounterNotifier(value) : super(value);
 
-void initLocator() {
-  locator.registerLazySingleton<Counter>(() => Counter(count: 0, start: 0, end: 7, step: 1));
+  /*Increases the app's counter according to configurations */
+  void increaseCounter() {
+    int count = locator<Counter>().count;
+    final start = locator<Counter>().start;
+    final end = locator<Counter>().end;
+    final step = locator<Counter>().step;
+
+    // Count circularly
+    count += step;
+    if (count > end) {
+      count++;
+    }
+    count = max(count % (end + 1), start);
+    locator<Counter>().count = count;
+    notifyListeners();
+  }
+
+  /*Saves the configurations the user made */
+  void saveCounterConfig(int start, int end, int step) {
+    locator<Counter>().start = start;
+    locator<Counter>().end = end;
+    locator<Counter>().step = step;
+    locator<Counter>().count = max(start, locator<Counter>().count);
+    notifyListeners();
+  }
 }
+
+// class CounterManager{
+//   final Counter counter;
+//   final CounterNotifier counterNotifier;
+// }
+
+final counterNotifier = CounterNotifier(0);

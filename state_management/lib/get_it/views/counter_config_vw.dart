@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/get_it/models/counter.dart';
 import 'package:state_management/get_it/services/counter_svc.dart';
+import 'package:state_management/get_it/services/locator.dart';
 
 class CounterConfigVw extends StatefulWidget {
   static const route = 'CounterConfigVw';
@@ -13,7 +14,6 @@ class CounterConfigVw extends StatefulWidget {
 
 class _CounterConfigVwState extends State<CounterConfigVw> {
   bool saved = true;
-  var countCtl = TextEditingController();
   var startCtl = TextEditingController();
   var endCtl = TextEditingController();
   var stepCtl = TextEditingController();
@@ -21,7 +21,6 @@ class _CounterConfigVwState extends State<CounterConfigVw> {
   @override
   void initState() {
     /*Start text inputs values with the global counter instance values*/
-    countCtl.text = locator<Counter>().count.toString();
     startCtl.text = locator<Counter>().start.toString();
     endCtl.text = locator<Counter>().end.toString();
     stepCtl.text = locator<Counter>().step.toString();
@@ -43,10 +42,10 @@ class _CounterConfigVwState extends State<CounterConfigVw> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('Start'),
-                NumberInput(ctl: countCtl, onTap: setSavedFalse),
+                NumberInput(ctl: startCtl, onTap: setSavedFalse),
                 const SizedBox(height: 10),
                 const Text('End'),
-                NumberInput(ctl: startCtl, onTap: setSavedFalse),
+                NumberInput(ctl: endCtl, onTap: setSavedFalse),
                 const SizedBox(height: 10),
                 const Text('Step'),
                 NumberInput(ctl: stepCtl, onTap: setSavedFalse),
@@ -55,10 +54,11 @@ class _CounterConfigVwState extends State<CounterConfigVw> {
                 ElevatedButton(
                   onPressed: () {
                     /*Save the current configuration*/
-                    locator<Counter>().count = int.parse(countCtl.text);
-                    locator<Counter>().start = int.parse(startCtl.text);
-                    locator<Counter>().end = int.parse(endCtl.text);
-                    locator<Counter>().step = int.parse(stepCtl.text);
+                    counterNotifier.saveCounterConfig(
+                      int.parse(startCtl.text),
+                      int.parse(endCtl.text),
+                      int.parse(stepCtl.text),
+                    );
                     setState(() => saved = true);
                   },
                   child: const Icon(Icons.save, size: 40),

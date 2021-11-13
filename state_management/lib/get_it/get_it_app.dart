@@ -17,13 +17,6 @@ class GetItApp extends StatefulWidget {
 class _GetItAppState extends State<GetItApp> {
   @override
   Widget build(BuildContext context) {
-    // return Navigator(
-    //   initialRoute: CounterVw.route,
-    //   onGenerateRoute: (RouteSettings settings) {
-    //     return routes[settings.name];
-    //   },
-    // );
     return const Center(child: CounterVw());
-    // return const Center(child: CounterConfigVw());
   }
 }

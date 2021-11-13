@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:state_management/get_it/models/counter.dart';
+import 'package:state_management/get_it/services/counter_svc.dart';
+import 'package:state_management/get_it/services/locator.dart';
 import 'package:state_management/get_it/views/counter_config_vw.dart';
 
 class CounterVw extends StatelessWidget {
@@ -17,7 +20,17 @@ class CounterVw extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(child: Text('0', style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.1))),
+              Center(
+                child: ValueListenableBuilder(
+                  valueListenable: counterNotifier,
+                  builder: (context, value, child) {
+                    return Text(
+                      locator<Counter>().count.toString(),
+                      style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.1),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
           Positioned(
@@ -35,9 +48,7 @@ class CounterVw extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {
-          // Increase counter
-        },
+        onPressed: () => counterNotifier.increaseCounter(),
       ),
     );
   }
