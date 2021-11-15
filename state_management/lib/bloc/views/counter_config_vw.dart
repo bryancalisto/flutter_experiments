@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/get_it/models/counter.dart';
-import 'package:state_management/get_it/services/counter_svc.dart';
-import 'package:state_management/get_it/services/locator.dart';
+import 'package:state_management/bloc/bloc/counter_bloc.dart';
 
 class CounterConfigVw extends StatefulWidget {
   static const route = 'CounterConfigVw';
@@ -21,9 +19,9 @@ class _CounterConfigVwState extends State<CounterConfigVw> {
   @override
   void initState() {
     /*Start text inputs values with the global counter instance values*/
-    startCtl.text = '0';
-    endCtl.text = '0';
-    stepCtl.text = '0';
+    startCtl.text = counterBloc.counter.start.toString();
+    endCtl.text = counterBloc.counter.end.toString();
+    stepCtl.text = counterBloc.counter.step.toString();
     super.initState();
   }
 
@@ -54,6 +52,11 @@ class _CounterConfigVwState extends State<CounterConfigVw> {
                 ElevatedButton(
                   onPressed: () {
                     /*Save the current configuration*/
+                    counterBloc.saveCounterConfig(
+                      int.parse(startCtl.text),
+                      int.parse(endCtl.text),
+                      int.parse(stepCtl.text),
+                    );
                     setState(() => saved = true);
                   },
                   child: const Icon(Icons.save, size: 40),

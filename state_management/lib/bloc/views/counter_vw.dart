@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/get_it/services/counter_svc.dart';
-import 'package:state_management/get_it/views/counter_config_vw.dart';
+import 'package:state_management/bloc/bloc/counter_bloc.dart';
+import 'package:state_management/bloc/models/counter.dart';
+import 'package:state_management/bloc/views/counter_config_vw.dart';
 
-class CounterVw extends StatelessWidget {
+class CounterVw extends StatefulWidget {
   static const route = 'CounterVw';
 
   const CounterVw({Key? key}) : super(key: key);
 
+  @override
+  State<CounterVw> createState() => _CounterVwState();
+}
+
+class _CounterVwState extends State<CounterVw> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,16 +24,21 @@ class CounterVw extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
-                child: ValueListenableBuilder(
-                  valueListenable: counterNotifier,
-                  builder: (context, value, child) {
-                    return Text(
-                      '0',
-                      style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.1),
+              StreamBuilder<Counter>(
+                stream: counterBloc.streamCtl.stream,
+                builder: (context, snapshot) {
+                  // Snapshot always will have data
+                  if (snapshot.hasData) {
+                    return Center(
+                      child: Text(
+                        snapshot.data!.count.toString(),
+                        style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.1),
+                      ),
                     );
-                  },
-                ),
+                  }
+
+                  return Container();
+                },
               ),
             ],
           ),
@@ -46,8 +57,13 @@ class CounterVw extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => print('count'),
+        onPressed: () => counterBloc.increaseCounter(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
