@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/bloc/bloc/counter_bloc.dart';
-import 'package:state_management/bloc/models/counter.dart';
-import 'package:state_management/bloc/views/counter_config_vw.dart';
+import 'package:state_management/bloc_vanilla/bloc/counter_bloc.dart';
+import 'package:state_management/bloc_vanilla/models/counter.dart';
+import 'package:state_management/bloc_vanilla/views/counter_config_vw.dart';
 
 class CounterVw extends StatefulWidget {
   static const route = 'CounterVw';

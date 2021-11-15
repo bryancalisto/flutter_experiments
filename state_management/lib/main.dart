@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/bloc/bloc_app.dart';
+import 'package:state_management/bloc_vanilla/bloc_app.dart';
 import 'package:state_management/get_it/get_it_app.dart';
 import 'package:state_management/get_it/services/locator.dart';
 
@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
   int _currentViewIndex = 0;
   final List<Widget> _tabsContent = const [
     GetItApp(),
-    BlocApp(),
+    BlocVanillaApp(),
   ];
 
   @override
@@ -50,7 +50,10 @@ class _MyAppState extends State<MyApp> {
               backgroundColor: Colors.black,
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.get_app, color: Colors.white), label: 'Get it'),
-                BottomNavigationBarItem(icon: Icon(Icons.av_timer_outlined, color: Colors.white), label: 'BLoC'),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.av_timer_outlined, color: Colors.white),
+                  label: 'BLoC vanilla',
+                ),
               ],
               iconSize: 30,
               onTap: (int index) => setState(() => _currentViewIndex = index),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/bloc/bloc/counter_bloc.dart';
+import 'package:state_management/bloc_vanilla/bloc/counter_bloc.dart';
 
 class CounterConfigVw extends StatefulWidget {
   static const route = 'CounterConfigVw';

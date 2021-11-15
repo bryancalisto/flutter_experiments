@@ -1,11 +1,17 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:state_management/bloc/models/counter.dart';
+
+import 'package:state_management/bloc_vanilla/models/counter.dart';
 
 abstract class Bloc {
   void dispose();
 }
 
+/*
+This is a vanilla BLoC that makes simple use of streams to add new events that will be listened 
+by a streamBuilder in the UI. The events are added according to events triggered in the UI. 
+All the state logic of this app is in this class.
+ */
 class CounterBloc implements Bloc {
   final Counter _counter = Counter(count: 0, start: 0, end: 4, step: 1);
   final streamCtl = StreamController<Counter>.broadcast();

@@ -20,7 +20,7 @@ void main() {
       //ARRANGE
       await tester.pumpWidget(widgetToTest);
       //ACT
-      await tester.tap(find.text('BLoC'));
+      await tester.tap(find.text('BLoC vanilla'));
       await tester.pump();
       //ASSERT
       expect(find.text('BlocApp'), findsOneWidget);
