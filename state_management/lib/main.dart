@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:state_management/bloc/app.dart';
 import 'package:state_management/bloc_vanilla/bloc_app.dart';
 import 'package:state_management/get_it/get_it_app.dart';
 import 'package:state_management/get_it/services/locator.dart';
@@ -17,9 +18,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _currentViewIndex = 0;
-  final List<Widget> _tabsContent = const [
-    GetItApp(),
-    BlocVanillaApp(),
+  final List<Widget> _tabsContent = [
+    const GetItApp(),
+    const BlocVanillaApp(),
+    BlocApp(),
   ];
 
   @override
@@ -53,6 +55,10 @@ class _MyAppState extends State<MyApp> {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.av_timer_outlined, color: Colors.white),
                   label: 'BLoC vanilla',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.av_timer_outlined, color: Colors.white),
+                  label: 'BLoC package / RxDart',
                 ),
               ],
               iconSize: 30,
